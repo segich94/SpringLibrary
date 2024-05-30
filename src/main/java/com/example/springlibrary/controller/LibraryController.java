@@ -6,9 +6,7 @@ import com.example.springlibrary.service.AuthorService;
 import com.example.springlibrary.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,15 +16,7 @@ public class LibraryController {
     private final BookService bookService;
     private final AuthorService authorService;
     @GetMapping("/all")
-    public Page<Book> getAllBooks(@RequestParam(value = "sort", required = false) String sortBy,
-                                  @RequestParam(value = "page", defaultValue = "0") int page,
-                                  @RequestParam(value = "size", defaultValue = "10") int size) {
-        Pageable pageable;
-        if (sortBy != null) {
-            pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        } else {
-            pageable = PageRequest.of(page, size);
-        }
+    public Page<Book> getAllBooks(Pageable pageable) {
 
         return bookService.findAllBook(pageable);
     }
